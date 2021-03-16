@@ -4,6 +4,10 @@ let canvasHeight;
 const { PI, atan2, abs, sqrt, random, round, tan } = Math;
 
 window.addEventListener('load', () => {
+	var stats = new Stats();
+	stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+	document.body.appendChild( stats.dom );
+	
 	const canvas = document.getElementById('canvas');
 	const ctx = canvas.getContext('2d');
 	const mousePos = { x: Infinity, y: Infinity};
@@ -18,25 +22,27 @@ window.addEventListener('load', () => {
 		mousePos.y = e.clientY;
 	});
 
-	ctx.fillStyle = 'orange';
 	const objs = generateObjs(5000)
 
+	let distance = 0;
+	let angle = 0;
+	let force = 0;
+	let xforce = 0;
+	let yforce = 0;
+	let x, y;
+	let colorScale = 10;
+	const fieldDistance = 125;
+
 	const draw = () => {
+		stats.begin();
 		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-		let distance = 0;
-		let angle = 0;
-		let force = 0;
-		let xforce = 0;
-		let yforce = 0;
-		let x, y;
-		let colorScale = 10;
 
 		objs.forEach(obj => {
 			distance = obj.distance(mousePos.x, mousePos.y);
 			angle = obj.angle(mousePos.x, mousePos.y);
 
-			if (distance < 200) {
-				force = ((200 - distance) / 20);
+			if (distance < fieldDistance) {
+				force = ((fieldDistance - distance) / 20);
 				xforce = Math.cos(angle) * force;
 				yforce = Math.sin(angle) * force;
 				x = obj.x + xforce;
@@ -68,13 +74,7 @@ window.addEventListener('load', () => {
 			);
 		})
 
-		// ctx.fillStyle = distance < 141.42 ? 'green' : 'orange';
-		// ctx.font = '36px serif';
-
-		// ctx.fillText(`mouse X,Y: ${mousePos.x.toFixed(0)}, ${mousePos.y.toFixed(0)}`, 300, 25)
-		// ctx.fillText(`obj X, Y: ${boxPos.x.toFixed(0)}, ${boxPos.y.toFixed(0)}`, 300, 25 + 36)
-		// ctx.fillText(`diff X, Y: ${x_diff.toFixed(0)}, ${y_diff.toFixed(0)}`, 300, 25 + 36 * 2)
-		
+		stats.end();
 		requestAnimationFrame(draw);
 	};
 
@@ -116,7 +116,6 @@ class Obj {
 		return theta + Math.PI;
 	}
 }
-
 
 function clamp(value, min, max) {
 	return Math.max(Math.min(value,max), min);
