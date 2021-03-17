@@ -4,6 +4,8 @@ window.addEventListener('load', () => {
 	document.body.appendChild( stats.dom );
 	document.body.style.height = '100vh';
 	document.body.style.width = '100vw';
+
+	const batch = 1000;
 	
 	const text = document.createElement('div');
 	text.className = 'text';
@@ -25,7 +27,7 @@ window.addEventListener('load', () => {
 		const left = `${x}px`
 		const top = `${y}px`;
 
-		for (let i=0; i < 5000; i++) {
+		for (let i=0; i < batch; i++) {
 			el = document.createElement('div');
 			el.className = 'box';
 			el.style.background = `rgb(${random255()}, ${random255()}, ${random255()})`
@@ -38,7 +40,7 @@ window.addEventListener('load', () => {
 			objs.push(el);
 		}
 
-		writeText(count += 250);
+		writeText(count += batch);
 	}
 	
 	let j;

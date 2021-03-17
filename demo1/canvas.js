@@ -2,8 +2,11 @@ window.addEventListener('load', () => {
 	var stats = new Stats();
 	stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
 	document.body.appendChild( stats.dom );
+
+	const batch = 1000;
 	
-	const canvas = document.querySelector('canvas');
+	const canvas = document.createElement('canvas');
+	document.body.appendChild(canvas);
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 	const ctx = canvas.getContext('2d'); // '2d' | 'webgl'
@@ -14,7 +17,7 @@ window.addEventListener('load', () => {
 	function createElements(e) {
 		const x = e.clientX;
 		const y = e.clientY;
-		for (let i=0; i < 250; i++) {
+		for (let i=0; i < batch; i++) {
 			objs.push(new Obj({
 				x: x + Math.random() * 100,
 				y: y + Math.random() * 100,
