@@ -1,34 +1,34 @@
 window.addEventListener('load', () => {
+	const infoElement = document.querySelector('.info');
 	var stats = new Stats();
 	stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
-	document.body.appendChild( stats.dom );
-	document.body.style.height = '100vh';
-	document.body.style.width = '100vw';
+	infoElement.appendChild( stats.dom );
+	
+	const text = document.createElement('span');
+	text.className = 'text count';
+	infoElement.appendChild(text);
+
+	const writeText = (count) => {
+		text.textContent = `# Objects: ${count}`;
+	}
+	let count = 0;
+	writeText(count);
 
 	const mainWidth = 600;
 	const mainHeight = 480;
 	const boxHeight = 40;
 	const boxWidth = 40;
 	const batch = 50;
-	
-	const text = document.createElement('div');
-	text.className = 'text count';
-	document.body.appendChild(text);
-	
-	const writeText = (count) => {
-		text.textContent = `# Objects: ${count}`;
-	}
-	let count = 0;
-	writeText(count);
-	
 	let objs = [];
-	document.body.addEventListener('click', createElements);
+
 	const main = document.querySelector('main');
+	main.addEventListener('click', createElements);
 	
 	const random255 = () => Math.floor(Math.random() * 155 + 100);
 	function createElements(e) {
-		const x = e.clientX;
-		const y = e.clientY;
+		const rect = main.getBoundingClientRect();
+		const x = e.clientX - rect.x;
+		const y = e.clientY - rect.y;
 		const left = `${x}px`
 		const top = `${y}px`;
 

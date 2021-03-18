@@ -16,7 +16,6 @@
 			position: relative;
 			display: flex;
 			justify-content: center;
-			align-items: center;
 			background: #333;
 			height: 100vh;
 		}
@@ -33,7 +32,7 @@
 			background: white;
 		}
 		.count {
-			top: 80px;
+			top: 130px;
 		}
 		.title {
 			top: 10px;
@@ -41,14 +40,35 @@
 		body > div {
 			user-select: none;
 		}
-		body > div > canvas {
+		.container {
+			margin: 0 auto;
+			width: 600px;
+			padding-top: 2rem;
+		}
+		.info {
+			position: relative;
+			height: 250px;
+		}
+		.info > div {
 			width: 250px !important;
 			height: 166px !important;
+			position: absolute !important;
+			top: 0;
+			left: 0;
+		}
+		.info canvas {
+			height: 100% !important;
+			width: 100% !important;
 		}
 	</style>
 </head>
 <body>
-	<div class='text title'>CANVAS (webgl)</div>
+	<div class='container'>
+		<div class='info'>
+			<span class='text title'>CANVAS (webgl)</span>
+	
+		</div>
+	</div>
 	<script src='./canvas.js'></script>
 </body>
 </html>

@@ -1,7 +1,9 @@
 window.addEventListener('load', () => {
 	var stats = new Stats();
 	stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
-	document.body.appendChild( stats.dom );
+	const infoElement = document.querySelector('.info')
+	const container = document.querySelector('.container')
+	infoElement.appendChild( stats.dom );
 
 	const canvasWidth = 600;
 	const canvasHeight = 480;
@@ -9,10 +11,10 @@ window.addEventListener('load', () => {
 	const boxHeight = 40;
 
 	let count = 0;
-	const countElement = document.createElement('div');
+	const countElement = document.createElement('span');
 	countElement.className = 'text count'
 	countElement.textContent = '# Objects: 0';
-	document.body.appendChild(countElement)
+	infoElement.appendChild(countElement)
 	
 	const app = new PIXI.Application({
 		width: canvasWidth,
@@ -20,8 +22,8 @@ window.addEventListener('load', () => {
 		backgroundColor: 0xFFFFFF
 	});
 
-	document.body.appendChild(app.view);
-	const batch = 50;
+	container.appendChild(app.view);
+	const batch = 500;
 	
 	document.body.addEventListener('click', createElements);
 	

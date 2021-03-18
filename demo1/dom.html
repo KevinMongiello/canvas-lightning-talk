@@ -14,10 +14,9 @@
 		}
 		body {
 			position: relative;
-			display: flex;
-			justify-content: center;
-			align-items: center;
 			background: #333;
+			height: 100vh;
+			width: 100vw;
 		}
 		.box {
 			position: absolute;
@@ -49,11 +48,37 @@
 			background: #eee;
 			overflow: hidden;
 		}
+		.container {
+			margin: 0 auto;
+			width: 600px;
+			padding-top: 2rem;
+		}
+		.info {
+			position: relative;
+			height: 250px;
+		}
+		.info > div {
+			width: 250px !important;
+			height: 166px !important;
+			position: absolute !important;
+			top: 0;
+			left: 0;
+		}
+		.info canvas {
+			height: 100% !important;
+			width: 100% !important;
+		}
 	</style>
 </head>
 <body>
-	<div class='text title'>DOM</div>
-	<main></main>
+	<div class='container'>
+		<div class='info'>
+			<span class='text title'>DOM</span>
+
+		</div>
+		<main></main>
+
+	</div>
 	<script src='./dom.js'></script>
 </body>
 </html>
