@@ -2,7 +2,7 @@
 const { PI, atan2, abs, sqrt, random, round, tan, sin, cos } = Math;
 const mouse = { x: Infinity, y: Infinity};
 let canvasHeight, canvasWidth;
-const scalars = { 
+const coefficients = { 
 	field: 125,
 	color: 10
 };
@@ -49,8 +49,6 @@ window.addEventListener('load', () => {
 	const stats = fpsStats();
 	const ctx = setupCanvas('#canvas');
 	const objs = generateObjs(5000);
-	
-
 /**
  * 
  * 
@@ -66,7 +64,7 @@ window.addEventListener('load', () => {
 
 		// render and paint
 		for (obj of objs) {
-			render(obj, params, scalars);
+			render(obj, params, coefficients, mouse);
 			paint(obj, ctx);
 		}
 
@@ -83,24 +81,22 @@ window.addEventListener('load', () => {
 
 
 
-
-
-function render(obj, params, scalars) {
+function render(obj, params, coefficients, mouse) {
 	params.distance = obj.distance(mouse.x, mouse.y);
 	params.angle = obj.angle(mouse.x, mouse.y);
 	
 	// If mouse is within range of obj
-	if (params.distance < scalars.field) {
+	if (params.distance < coefficients.field) {
 		// the closer to the box, the bigger the force
-		params.force = ((scalars.field - params.distance) / 20);
+		params.force = ((coefficients.field - params.distance) / 20);
 		params.xforce = cos(params.angle) * params.force;
 		params.yforce = sin(params.angle) * params.force;
 		params.x = obj.x + params.xforce;
 		params.y = obj.y + params.yforce;
 
-		obj.hue = (obj.hue + params.xforce * scalars.color) % 360;
-		// obj.sat = (obj.sat + params.yforce * scalars.color) % 50 + 50;
-		// obj.lum = (obj.lum + (params.xforce + params.yforce) * scalars.color) % 50 + 50;
+		obj.hue = (obj.hue + params.xforce * coefficients.color) % 360;
+		// obj.sat = (obj.sat + params.yforce * coefficients.color) % 50 + 50;
+		// obj.lum = (obj.lum + (params.xforce + params.yforce) * coefficients.color) % 50 + 50;
 		obj.x = clamp(params.x, obj.w / 2, canvasWidth - obj.w / 2);
 		obj.y = clamp(params.y, obj.h / 2, canvasHeight - obj.h / 2);
 		obj.dx = params.xforce;
