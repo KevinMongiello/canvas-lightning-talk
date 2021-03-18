@@ -4,11 +4,64 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Demo 2 - Basic Shape</title>
+	<title>Demo 2</title>
+	<script src='//mrdoob.github.io/stats.js/build/stats.min.js'></script>
+	<style>
+		@font-face {
+			font-family: scribble;
+			src: url(Scribble.ttf);
+		}
+		
+		html,
+		body {
+			min-height: 100vh;
+		}
+
+		*,
+		:before,
+		:after {
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+		}
+		body {
+			padding: 0;
+			margin: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		#container {
+			/* height: 250px; */
+			position: relative;
+		}
+		#welcome {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			z-index: 100;
+			font-size: 13em;
+			font-family: scribble;
+		}
+		.mask {
+			background: white;
+			color: black;
+			mix-blend-mode: screen;
+		}
+		
+	</style>
 </head>
 <body>
-	<canvas>
-	</canvas>
-	<script src='./canvas.js'></script>
+	<div id='container'>
+		<canvas id='canvas' width=300 height=300></canvas>
+		<div class='mask' id='welcome'>InRhythm</div>
+	</div>
+
+	<script src='canvas.js'></script>
 </body>
 </html>

@@ -4,9 +4,15 @@ window.addEventListener('load', () => {
 	document.body.appendChild( stats.dom );
 	document.body.style.height = '100vh';
 	document.body.style.width = '100vw';
+
+	const mainWidth = 600;
+	const mainHeight = 480;
+	const boxHeight = 40;
+	const boxWidth = 40;
+	const batch = 50;
 	
 	const text = document.createElement('div');
-	text.className = 'text';
+	text.className = 'text count';
 	document.body.appendChild(text);
 	
 	const writeText = (count) => {
@@ -17,6 +23,7 @@ window.addEventListener('load', () => {
 	
 	let objs = [];
 	document.body.addEventListener('click', createElements);
+	const main = document.querySelector('main');
 	
 	const random255 = () => Math.floor(Math.random() * 155 + 100);
 	function createElements(e) {
@@ -25,7 +32,7 @@ window.addEventListener('load', () => {
 		const left = `${x}px`
 		const top = `${y}px`;
 
-		for (let i=0; i < 5000; i++) {
+		for (let i=0; i < batch; i++) {
 			el = document.createElement('div');
 			el.className = 'box';
 			el.style.background = `rgb(${random255()}, ${random255()}, ${random255()})`
@@ -34,11 +41,11 @@ window.addEventListener('load', () => {
 			el.dataset.dx = Math.random() * 20;
 			el.dataset.dy = Math.random() * 20;
 			
-			document.body.appendChild(el);
+			main.appendChild(el);
 			objs.push(el);
 		}
 
-		writeText(count += 250);
+		writeText(count += batch);
 	}
 	
 	let j;
@@ -54,8 +61,8 @@ window.addEventListener('load', () => {
 			objY = parseInt(obj.style.top) + parseInt(obj.dataset.dy);
 			obj.style.left = objX + 'px';
 			obj.style.top = objY + 'px';
-			if (objX >= window.innerWidth || objX <= 0) obj.dataset.dx *= -1;
-			if (objY >= window.innerHeight || objY <= 0) obj.dataset.dy *= -1;
+			if (objX >= mainWidth - boxWidth || objX <= 0) obj.dataset.dx *= -1;
+			if (objY >= mainHeight - boxHeight || objY <= 0) obj.dataset.dy *= -1;
 		}
 	
 		stats.end();
