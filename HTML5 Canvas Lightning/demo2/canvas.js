@@ -1,29 +1,11 @@
-let canvasWidth;
-let canvasHeight;
-
-const { PI, atan2, abs, sqrt, random, round, tan } = Math;
+const { min, max, PI, atan2, abs, sqrt, random, round, tan, sin, cos } = Math;
+const mouse = { x: Infinity, y: Infinity};
 
 window.addEventListener('load', () => {
-	var stats = new Stats();
-	stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
-	document.body.appendChild( stats.dom );
-	
-	const canvas = document.getElementById('canvas');
-	const ctx = canvas.getContext('2d');
-	const mousePos = { x: Infinity, y: Infinity};
-
-	canvasWidth = window.innerWidth;
-	canvasHeight = 250;
-	canvas.width = canvasWidth;
-	canvas.height = canvasHeight;
-
-	document.querySelector('#container').addEventListener('mousemove', (e) => {
-		mousePos.x = e.clientX;
-		mousePos.y = e.clientY;
-	});
-
-	const objs = generateObjs(5000)
-
+	mouseListener(mouse);
+	const stats = fpsStats();
+	const { ctx, canvasHeight, canvasWidth } = setupCanvas('#canvas');
+	const fieldDistance = 125;
 	let distance = 0;
 	let angle = 0;
 	let force = 0;
@@ -31,20 +13,21 @@ window.addEventListener('load', () => {
 	let yforce = 0;
 	let x, y;
 	let colorScale = 10;
-	const fieldDistance = 125;
-
+	let obj;
+	
+	const objs = generateObjs(5000, canvasWidth, canvasHeight);
 	const draw = () => {
 		stats.begin();
 		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-		objs.forEach(obj => {
-			distance = obj.distance(mousePos.x, mousePos.y);
-			angle = obj.angle(mousePos.x, mousePos.y);
+		for (obj of objs) {
+			distance = obj.distance(mouse.x, mouse.y);
+			angle = obj.angle(mouse.x, mouse.y);
 
 			if (distance < fieldDistance) {
 				force = ((fieldDistance - distance) / 20);
-				xforce = Math.cos(angle) * force;
-				yforce = Math.sin(angle) * force;
+				xforce = cos(angle) * force;
+				yforce = sin(angle) * force;
 				x = obj.x + xforce;
 				y = obj.y + yforce;
 				obj.hue = (obj.hue + xforce * colorScale) % 360;
@@ -57,12 +40,10 @@ window.addEventListener('load', () => {
 			} else {
 				obj.dx = abs(obj.dx) < 50 ? obj.dx : obj.dx * 0.99;
 				obj.dy = abs(obj.dy) < 50 ? obj.dy : obj.dy * 0.99;
-
 				obj.x = obj.x + obj.dx;
 				obj.y = obj.y + obj.dy;
 				if (obj.x <= 0 || obj.x >= canvasWidth) obj.dx *= -1
 				if (obj.y <= 0 || obj.y >= canvasHeight) obj.dy *= -1
-				
 			}
 
 			ctx.fillStyle = `hsl(${obj.hue}, ${obj.sat}%, ${obj.lum}%)`;
@@ -72,16 +53,16 @@ window.addEventListener('load', () => {
 				obj.w,
 				obj.h
 			);
-		})
+		}
 
 		stats.end();
 		requestAnimationFrame(draw);
-	};
+	}
 
 	requestAnimationFrame(draw);
 });
 
-function generateObjs(number) {
+function generateObjs(number, canvasWidth, canvasHeight) {
 	const objs = [];
 	for (let i=0; i < number; i++) {
 		objs.push(new Obj({
@@ -113,10 +94,45 @@ class Obj {
 
 	angle(x, y) {
 		let theta = atan2(y - this.y , x - this.x);
-		return theta + Math.PI;
+		return theta + PI;
 	}
 }
 
 function clamp(value, min, max) {
-	return Math.max(Math.min(value,max), min);
+	return max(min(value,max), min);
+}
+
+
+function draw2() {
+	// createobjects
+	// ctx.fillRect(x, y, height, width);
+
+	// create an animation loop
+	// inside loop update our objects
+	// then paint them on screen
+	// continue the animation loop
+}
+
+function setupCanvas(canvasSelector, width = window.innerWidth, height = 250) {
+	const canvas = document.querySelector(canvasSelector);
+	const ctx = canvas.getContext('2d');
+	
+	canvas.width = width;
+	canvas.height = height;
+
+	return { ctx, canvasWidth: width, canvasHeight: height };
+}
+
+function fpsStats() {
+	const stats = new Stats();
+	stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+	document.body.appendChild( stats.dom )
+	return stats;
+}
+
+function mouseListener(mouse) {
+	document.querySelector('#container').addEventListener('mousemove', (e) => {
+		mouse.x = e.clientX;
+		mouse.y = e.clientY;
+	});
 }
