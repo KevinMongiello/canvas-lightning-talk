@@ -14,7 +14,7 @@
 		
 		html,
 		body {
-			min-height: 100%;
+			min-height: 100vh;
 		}
 
 		*,
@@ -27,6 +27,9 @@
 		body {
 			padding: 0;
 			margin: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 		}
 		#container {
 			/* height: 250px; */
@@ -46,54 +49,17 @@
 			font-family: scribble;
 		}
 		.mask {
-			font-size: 10em;
-			font-weight: bold;
-			line-height: 1;
-			position: relative;
-			display: inline-block;
-			margin: 0.25em;
-			padding: 0.5em 0.75em;
-			text-align: center;
-			/* Color fallback */
-			color: #fff;
-			-webkit-background-clip: text;
-			background-clip: text;
-			-webkit-text-fill-color: transparent;
-			background-image: url(https://picsum.photos/480/200?random);
-		}
-		.mask:before, .mask:after {
-			position: absolute;
-    	content: '';
-		}
-		.mask:before {
-			z-index: -2;
-			top: 0;
-			right: 0;
-			bottom: 0;
-			left: 0;
-			background-image: url(https://picsum.photos/480/200?random);
-		}
-		.mask:after {
-			position: absolute;
-			z-index: -1;
-			top: .125em;
-			right: .125em;
-			bottom: .125em;
-			left: .125em;
-			background-color: #000;
-		}
-
-		.mask2 {
 			background: white;
 			color: black;
 			mix-blend-mode: screen;
 		}
+		
 	</style>
 </head>
 <body>
 	<div id='container'>
 		<canvas id='canvas' width=300 height=300></canvas>
-		<div class='mask2' id='welcome'>InRhythm</div>
+		<div class='mask' id='welcome'>InRhythm</div>
 	</div>
 
 	<script src='canvas.js'></script>
